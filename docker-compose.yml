@@ -1,7 +1,6 @@
 version: '2'
 services:
   kibana:
-    # build: kibana/
     image: danjellz/kibana:1.0
     volumes:
       - ./kibana/config/kibana.yml:/opt/kibana/config/kibana.yml
@@ -9,6 +8,7 @@ services:
       - "5601:5601"
     links:
       - elasticsearch
+    restart: on-failure
 
   elasticsearch:
     image: elasticsearch:latest
@@ -17,6 +17,7 @@ services:
       - "9200:9200"
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data
+    restart: on-failure
 
   logstash:
     image: logstash:latest
@@ -27,6 +28,8 @@ services:
       - "5000:5000"
     links:
       - elasticsearch
+    restart: on-failure
+
 
 volumes:
   elasticsearch_data:
